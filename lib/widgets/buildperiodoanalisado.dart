@@ -1,17 +1,15 @@
 import 'package:flutter/material.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:portalreturn/models/acessosmes.dart';
 
 class BuildPeriodoAnalisado extends StatelessWidget {
-  final AsyncSnapshot<QuerySnapshot> snapshot;
 
-  AcessosMes acessosMes;
+  final int _dayStart;
+  final int _dayEnd;
+  final String _month;
 
-  BuildPeriodoAnalisado(this.snapshot);
+  BuildPeriodoAnalisado(this._dayStart, this._dayEnd, this._month);
 
   @override
   Widget build(BuildContext context) {
-    acessosMes = AcessosMes.fromDocument(snapshot.data.documents[0]);
     return Center(
       child: Card(
         child: Container(
@@ -32,12 +30,17 @@ class BuildPeriodoAnalisado extends StatelessWidget {
                   fontSize: 20.0),
             ),
             subtitle: Text(
-              "${acessosMes.dataInicio.toDate().day.toString()} à ${acessosMes.dataFim.toDate().day.toString()}/${acessosMes.dataFim.toDate().month.toString()}",
+              "${_dayStart.toString()} à ${_dayEnd.toString()}/$_month",
               style: TextStyle(
                   fontFamily: "Arvo",
                   fontWeight: FontWeight.bold,
                   color: Colors.grey,
                   fontSize: 18.0),
+            ),
+            trailing: Icon(
+              Icons.filter_list,
+              size: 30.0,
+              color: Colors.grey,
             ),
           ),
         ),

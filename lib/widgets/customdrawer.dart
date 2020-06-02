@@ -38,9 +38,9 @@ class CustomDrawer extends StatelessWidget {
                       top: 8.0,
                       left: 0.0,
                       child: Text(
-                        "Análises dos\nPortfolios",
+                        "Análises de Receitas\ne Despesas",
                         style: TextStyle(
-                          fontSize: 32.0,
+                          fontSize: 27.0,
                           fontWeight: FontWeight.bold
                         ),
                       ),

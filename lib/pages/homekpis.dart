@@ -1,10 +1,28 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:portalreturn/models/audiences.dart';
+import 'package:portalreturn/models/users.dart';
 import 'package:portalreturn/widgets/buildacessos.dart';
+import 'package:portalreturn/widgets/buildchartacessos.dart';
 import 'package:portalreturn/widgets/buildperiodoanalisado.dart';
 import 'package:portalreturn/widgets/customdrawer.dart';
+import 'package:portalreturn/utils/utilsdate.dart';
+import 'package:scoped_model/scoped_model.dart';
 
-class HomeKpis extends StatelessWidget {
+class HomeKpis extends StatefulWidget {
+  @override
+  _HomeKpisState createState() => _HomeKpisState();
+}
+
+class _HomeKpisState extends State<HomeKpis> {
+  Audiences audiences;
+
+  UtilsDate utilsDate = UtilsDate();
+
+  int _dayStart;
+  int _dayEnd;
+  String _month;
+  String _refDate;
 
   @override
   Widget build(BuildContext context) {
@@ -22,31 +40,56 @@ class HomeKpis extends StatelessWidget {
               fontWeight: FontWeight.bold),
         ),
       ),
-      body: ListView(
-        children: <Widget>[
-          FutureBuilder<QuerySnapshot>(
-            future: Firestore.instance.collection("acessosmes").getDocuments(),
-            builder: (context, snapshot) {
-              if (!snapshot.hasData) {
-                return Center(
-                  child: CircularProgressIndicator(
-                    valueColor: AlwaysStoppedAnimation<Color>(Colors.grey),
-                  ),
-                );
-              } else
-                return SingleChildScrollView(
-                  child: Column(
-                    children: <Widget>[
-                      BuildPeriodoAnalisado(snapshot),
-                      Divider(),
-                      BuildAcessos(snapshot),
-                      Divider(),
-                    ],
-                  ),
-                );
-            },
-          )
-        ],
+      body: ScopedModelDescendant<Users>(
+        builder: (context, child, model) {
+          if (!model.isLoggedIn()) {
+            final snackBar = SnackBar(
+              content: Text(
+                "Falha no Login",
+              ),
+              backgroundColor: Colors.redAccent,
+              duration: Duration(seconds: 2),
+            );
+            Navigator.of(context).pop();
+          }
+          return ListView(
+            children: <Widget>[
+              FutureBuilder<QuerySnapshot>(
+                future:
+                    Firestore.instance.collection("Audiences").orderBy("DayTransaction").getDocuments(),
+                builder: (context, snapshot) {
+                  if (!snapshot.hasData) {
+                    return Center(
+                      child: CircularProgressIndicator(
+                        valueColor: AlwaysStoppedAnimation<Color>(Colors.grey),
+                      ),
+                    );
+                  }
+                  audiences =
+                      Audiences.fromDocument(snapshot.data.documents.first);
+                  _dayStart = audiences.dayTransaction;
+                  audiences =
+                      Audiences.fromDocument(snapshot.data.documents.last);
+                  _dayEnd = audiences.dayTransaction;
+                  _month = utilsDate.monthReduceExtension(int.parse(audiences.transactionDate.substring(3,5))-1);
+                  _refDate = _month + "-" + audiences.transactionDate.substring(6,10);
+                  return SingleChildScrollView(
+                    child: Column(
+                      children: <Widget>[
+                        BuildPeriodoAnalisado(_dayStart, _dayEnd, _month),
+                        Divider(),
+                        BuildAcessos(snapshot.data.documents),
+                        Divider(),
+                        BuildChartAcessos(_refDate),
+                        Divider(),
+                      ],
+                    ),
+                  );
+                },
+              )
+            ],
+          );
+        },
       ),
       drawer: CustomDrawer(),
     );

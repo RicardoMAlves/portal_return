@@ -19,7 +19,7 @@ class _LoginScreenState extends State<LoginScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      key: _scaffoldkey,
+        key: _scaffoldkey,
         backgroundColor: Colors.white,
         appBar: AppBar(
           elevation: 0.3,
@@ -84,7 +84,30 @@ class _LoginScreenState extends State<LoginScreen> {
                   Align(
                     alignment: Alignment.centerRight,
                     child: FlatButton(
-                      onPressed: () {},
+                      onPressed: () {
+                        if (_emailController.text.isEmpty)
+                          _scaffoldkey.currentState.showSnackBar(
+                              SnackBar(
+                                content: Text(
+                                  "Favor informar o seu email",
+                                ),
+                                backgroundColor: Colors.redAccent,
+                                duration: Duration(seconds: 2),
+                              )
+                          );
+                        else {
+                          model.recoverPass(_emailController.text);
+                          _scaffoldkey.currentState.showSnackBar(
+                              SnackBar(
+                                content: Text(
+                                  "Confira o seu email",
+                                ),
+                                backgroundColor: Colors.green,
+                                duration: Duration(seconds: 2),
+                              )
+                          );
+                        }
+                      },
                       child: Text(
                         "Esqueci minha senha",
                         textAlign: TextAlign.right,
