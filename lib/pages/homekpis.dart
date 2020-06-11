@@ -3,6 +3,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:portalreturn/models/audiences.dart';
 import 'package:portalreturn/models/users.dart';
 import 'package:portalreturn/widgets/buildacessos.dart';
+import 'package:portalreturn/widgets/buildaudienceswithdebts.dart';
 import 'package:portalreturn/widgets/buildchartacessos.dart';
 import 'package:portalreturn/widgets/buildperiodoanalisado.dart';
 import 'package:portalreturn/widgets/customdrawer.dart';
@@ -21,6 +22,8 @@ class _HomeKpisState extends State<HomeKpis> {
 
   int _dayStart;
   int _dayEnd;
+  int _totalAudiences = 0;
+  int _totalAudiencesWithDebts = 0;
   String _month;
   String _refDate;
 
@@ -56,7 +59,10 @@ class _HomeKpisState extends State<HomeKpis> {
             children: <Widget>[
               FutureBuilder<QuerySnapshot>(
                 future:
-                    Firestore.instance.collection("Audiences").orderBy("DayTransaction").getDocuments(),
+                    Firestore.instance.collection("Audiences")
+                        .orderBy("DayTransaction")
+                        .where("RefDate", isEqualTo: int.parse(utilsDate.refDateSystemDate()))
+                        .getDocuments(),
                 builder: (context, snapshot) {
                   if (!snapshot.hasData) {
                     return Center(
@@ -73,15 +79,21 @@ class _HomeKpisState extends State<HomeKpis> {
                   _dayEnd = audiences.dayTransaction;
                   _month = utilsDate.monthReduceExtension(int.parse(audiences.transactionDate.substring(3,5))-1);
                   _refDate = _month + "-" + audiences.transactionDate.substring(6,10);
+                  snapshot.data.documents.forEach((element) {
+                    _totalAudiences = _totalAudiences + element.data["TotalAudiences"];
+                    _totalAudiencesWithDebts = _totalAudiencesWithDebts + element.data["TotalAudiencesWithDebts"];
+                  });
                   return SingleChildScrollView(
                     child: Column(
                       children: <Widget>[
                         BuildPeriodoAnalisado(_dayStart, _dayEnd, _month),
-                        Divider(),
-                        BuildAcessos(snapshot.data.documents),
-                        Divider(),
-                        BuildChartAcessos(_refDate),
-                        Divider(),
+                        //Divider(),
+                        //BuildAcessos(_totalAudiences, _totalAudiencesWithDebts),
+                        //Divider(),
+                        //BuildChartAcessos(_refDate),
+                        //Divider(),
+                        //BuildAudiencesWithDebts(_totalAudiencesWithDebts),
+                        //Divider(),
                       ],
                     ),
                   );

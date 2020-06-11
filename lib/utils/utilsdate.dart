@@ -9,12 +9,20 @@ class UtilsDate {
     "Setembro","Outubro","Novembro","Dezembro"
   ];
 
+  List<String> _monthNumeric = [
+    "01","02","03","04","05","06","07","08", "09","10","11","12"
+  ];
+
   String monthReduceExtension(int _month) {
     return _monthReduceExtension[_month];
   }
 
   String monthFullExtension(int _month) {
     return _monthFullExtension[_month];
+  }
+
+  String refDateSystemDate() {
+    return(DateTime.now().year.toString() + _monthNumeric[DateTime.now().month - 1]);
   }
 
 }

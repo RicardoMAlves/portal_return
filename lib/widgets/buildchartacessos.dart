@@ -47,7 +47,7 @@ class BuildChartAcessos extends StatelessWidget {
                 child: Column(
                   children: <Widget>[
                     Text(
-                      "Cadastrados em $_refDate",
+                      "Acessos em $_refDate",
                       style: TextStyle(
                           color: Colors.black,
                           fontSize: 18.0,

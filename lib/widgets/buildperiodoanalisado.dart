@@ -1,12 +1,19 @@
 import 'package:flutter/material.dart';
+import 'package:date_range_picker/date_range_picker.dart' as DateRagePicker;
 
-class BuildPeriodoAnalisado extends StatelessWidget {
+class BuildPeriodoAnalisado extends StatefulWidget {
 
   final int _dayStart;
   final int _dayEnd;
   final String _month;
 
   BuildPeriodoAnalisado(this._dayStart, this._dayEnd, this._month);
+
+  @override
+  _BuildPeriodoAnalisadoState createState() => _BuildPeriodoAnalisadoState();
+}
+
+class _BuildPeriodoAnalisadoState extends State<BuildPeriodoAnalisado> {
 
   @override
   Widget build(BuildContext context) {
@@ -16,10 +23,24 @@ class BuildPeriodoAnalisado extends StatelessWidget {
           width: 600.0,
           height: 70.0,
           child: ListTile(
-            leading: Icon(
-              Icons.date_range,
-              size: 50.0,
-              color: Colors.red,
+            leading: IconButton(
+              icon: Icon(
+                Icons.date_range,
+                size: 50.0,
+                color: Colors.red,
+              ),
+              onPressed: () async {
+                final List<DateTime> picked =
+                    await DateRagePicker.showDatePicker(
+                        context: context,
+                        initialFirstDate: new DateTime.now(),
+                        initialLastDate:
+                            (new DateTime.now()).add(new Duration(days: 7)),
+                        firstDate: new DateTime(2019),
+                        lastDate: new DateTime(2021));
+                if (picked != null && picked.length == 2) {
+                }
+              },
             ),
             title: Text(
               "Período Analisado:",
@@ -30,7 +51,7 @@ class BuildPeriodoAnalisado extends StatelessWidget {
                   fontSize: 20.0),
             ),
             subtitle: Text(
-              "${_dayStart.toString()} à ${_dayEnd.toString()}/$_month",
+              "${widget._dayStart.toString()} à ${widget._dayEnd.toString()}/${widget._month}",
               style: TextStyle(
                   fontFamily: "Arvo",
                   fontWeight: FontWeight.bold,

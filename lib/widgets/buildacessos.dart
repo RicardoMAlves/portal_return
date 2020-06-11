@@ -1,24 +1,15 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
 // ignore: must_be_immutable
 class BuildAcessos extends StatelessWidget {
 
-  final List<DocumentSnapshot> _listAudiences;
+  final int _totalAudiences;
+  final int _totalAudiencesWithDebts;
 
-  int _totalAudiences = 0;
-  int _totalAudiencesWithDebts = 0;
-
-  BuildAcessos(this._listAudiences);
+  BuildAcessos(this._totalAudiences, this._totalAudiencesWithDebts);
 
   @override
   Widget build(BuildContext context) {
-
-    _listAudiences.forEach((element) {
-      _totalAudiences = _totalAudiences + element.data["TotalAudiences"];
-      _totalAudiencesWithDebts = _totalAudiencesWithDebts + element.data["TotalAudiencesWithDebts"];
-    });
-
     return Center(
       child: Container(
         width: 600.0,
