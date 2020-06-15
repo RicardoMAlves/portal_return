@@ -19,7 +19,17 @@ class DrawerTile extends StatelessWidget {
           if (this.text == "Inicio")
             Navigator.of(context).push(MaterialPageRoute(builder: (context)=>HomeScreen()));
           if (this.text == "Portal Ipanema")
-            Navigator.of(context).push(MaterialPageRoute(builder: (context)=>HomeKpis()));
+            Navigator.of(context).push(
+                MaterialPageRoute(
+                    builder: (context)=>
+                        HomeKpis(
+                          dayStart: 0,
+                          dayEnd: 0,
+                          monthSelected: 0,
+                          yearSelected: 0,
+                        )
+                )
+            );
         },
         child: Container(
           height: 60.0,

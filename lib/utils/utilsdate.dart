@@ -25,4 +25,8 @@ class UtilsDate {
     return(DateTime.now().year.toString() + _monthNumeric[DateTime.now().month - 1]);
   }
 
+  String monthNumeric(int _month) {
+    return _monthNumeric[_month - 1];
+  }
+
 }

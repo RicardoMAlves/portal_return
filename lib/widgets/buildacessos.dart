@@ -42,8 +42,9 @@ class BuildAcessos extends StatelessWidget {
               style: TextStyle(
                   fontFamily: "Arvo",
                   fontWeight: FontWeight.bold,
-                  color: Colors.amber,
+                  color: Colors.red,
                   fontSize: 15.0),
+              textAlign: TextAlign.right,
             ),
           ),
         ),

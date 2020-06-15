@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:date_range_picker/date_range_picker.dart' as DateRagePicker;
+import 'package:portalreturn/pages/homekpis.dart';
 
 class BuildPeriodoAnalisado extends StatefulWidget {
-
   final int _dayStart;
   final int _dayEnd;
   final String _month;
@@ -14,7 +14,6 @@ class BuildPeriodoAnalisado extends StatefulWidget {
 }
 
 class _BuildPeriodoAnalisadoState extends State<BuildPeriodoAnalisado> {
-
   @override
   Widget build(BuildContext context) {
     return Center(
@@ -39,6 +38,13 @@ class _BuildPeriodoAnalisadoState extends State<BuildPeriodoAnalisado> {
                         firstDate: new DateTime(2019),
                         lastDate: new DateTime(2021));
                 if (picked != null && picked.length == 2) {
+                  Navigator.of(context).push(MaterialPageRoute(
+                      builder: (context) => HomeKpis(
+                            dayStart: picked[0].day,
+                            dayEnd: picked[1].day,
+                            monthSelected: picked[1].month,
+                            yearSelected: picked[1].year,
+                          )));
                 }
               },
             ),

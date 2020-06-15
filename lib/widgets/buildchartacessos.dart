@@ -2,20 +2,34 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:portalreturn/models/diasdomes.dart';
 import 'package:charts_flutter/flutter.dart' as charts;
+import 'package:portalreturn/utils/utilsdate.dart';
 
+// ignore: must_be_immutable
 class BuildChartAcessos extends StatelessWidget {
 
   final List<DiasDoMes> _listDiasDoMes = [];
 
-  final String _refDate;
+  final int _dayStart;
+  final int _dayEnd;
+  final int _refDate;
+  
+  UtilsDate utilsDate = UtilsDate();
 
-  BuildChartAcessos(this._refDate);
+  String _monthSelected;
+
+  BuildChartAcessos(this._dayStart, this._dayEnd ,this._refDate);
 
   @override
   Widget build(BuildContext context) {
+
+    _monthSelected = utilsDate.monthReduceExtension(int.parse(_refDate.toString().substring(4,6))-1);
+
     return Center(
       child: FutureBuilder<QuerySnapshot>(
-        future: Firestore.instance.collection("Audiences").orderBy("DayTransaction").getDocuments(),
+        future: Firestore.instance.collection("Audiences")
+            .where("RefDate", isEqualTo: this._refDate)
+            .where("DayTransaction", isGreaterThanOrEqualTo: this._dayStart, isLessThanOrEqualTo: this._dayEnd)
+            .getDocuments(),
         builder: (context, snapshot) {
           if (!snapshot.hasData)
             return Center(
@@ -47,7 +61,7 @@ class BuildChartAcessos extends StatelessWidget {
                 child: Column(
                   children: <Widget>[
                     Text(
-                      "Acessos em $_refDate",
+                      "Acessos em $_monthSelected",
                       style: TextStyle(
                           color: Colors.black,
                           fontSize: 18.0,

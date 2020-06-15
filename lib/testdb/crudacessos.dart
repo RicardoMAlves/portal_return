@@ -67,18 +67,17 @@ class CRUDAcessos extends StatelessWidget {
 
   void getData() {
     databaseReference
-        .collection("acessosmes")
+        .collection("Audiences")
+        .where("RefDate", isEqualTo: 202006)
+        .where("DayTransaction", isGreaterThanOrEqualTo: 3, isLessThanOrEqualTo: 5)
         .getDocuments()
         .then((QuerySnapshot snapshot) {
-      snapshot.documents.forEach((f) => print('${f.data}}'));
-    });
-    print("");
-    databaseReference
-        .collection("acessosmes").document("mai2020").collection("diasdomes")
-        .getDocuments()
-        .then((QuerySnapshot snapshot) {
-      snapshot.documents.forEach((f) => print('${f.data}}'));
-    });
+            snapshot.documents.forEach((f) => print('${f.data}}'));
+            print("\n");
+            print(snapshot.documents.first.data);
+            print("\n");
+            print(snapshot.documents.last.data);
+        });
   }
 
   void updateData() {

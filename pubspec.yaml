@@ -30,7 +30,7 @@ dependencies:
   cupertino_icons: ^0.1.3
   scoped_model: ^1.0.1
   firebase_auth: ^0.11.1+6
-  cloud_firestore: ^0.12.5
+  cloud_firestore: ^0.13.6
   charts_flutter: any
   date_range_picker: ^1.0.6
 
